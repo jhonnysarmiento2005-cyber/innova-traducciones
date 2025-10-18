@@ -15,7 +15,11 @@ export default function Home() {
     email: "",
     mensaje: ""
   });
-  const [formErrors, setFormErrors] = useState({});
+  const [formErrors, setFormErrors] = useState<{
+  nombre?: string;
+  email?: string;
+  mensaje?: string;
+}>({});
   const [formSubmitted, setFormSubmitted] = useState(false);
 
   // ACTUALIZA ESTOS DATOS CON TUS DATOS REALES
