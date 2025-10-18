@@ -24,7 +24,7 @@ export default function Home() {
 
   // ACTUALIZA ESTOS DATOS CON TUS DATOS REALES
   const contactInfo = {
-    whatsapp: "573001234567",
+    whatsapp: "573134809376",
     email: "traduccionesinnova@gmail.com",
     telefono: "+57 313 480 9376",
     direccion: "Bogotá, Colombia"
