@@ -228,19 +228,26 @@ export default function Home() {
           transition={{ duration: 1 }}
           className="mt-10 md:mt-0"
         >
-          <div className="w-[280px] md:w-[360px] h-[280px] md:h-[360px] rounded-2xl overflow-hidden shadow-lg border border-gray-100 bg-gradient-to-br from-slate-50 to-white flex items-center justify-center">
-            <svg width="240" height="240" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-              <rect x="0" y="0" width="300" height="300" rx="20" fill="#ffffff" />
-              <g transform="translate(30,40)">
-                <rect width="240" height="30" rx="6" fill="#0B1F3A" />
-                <rect y="60" width="200" height="10" rx="6" fill="#EDEBEC" />
-                <rect y="80" width="160" height="10" rx="6" fill="#F3F3F3" />
-                <rect y="100" width="120" height="10" rx="6" fill="#F3F3F3" />
-                <circle cx="200" cy="180" r="18" fill="#C5A45B" />
-                <text x="8" y="22" fill="#F3E7C9" fontSize="14" fontFamily="sans-serif">Documento traducido</text>
-              </g>
-            </svg>
-          </div>
+          <a 
+            href={whatsappLink} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="block w-[280px] md:w-[400px] h-[280px] md:h-[400px] rounded-2xl overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-300 cursor-pointer group"
+          >
+            <div className="relative w-full h-full">
+              <img 
+                src="/documentotraducido.jpg" 
+                alt="Servicios de traducción profesional - Contáctanos"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-70 group-hover:opacity-85"
+              />
+              {/* Overlay con ícono de WhatsApp al pasar el mouse */}
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-300 flex items-center justify-center">
+                <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-green-500 rounded-full p-4 shadow-lg">
+                  <Phone size={32} className="text-white" />
+                </div>
+              </div>
+            </div>
+          </a>
         </motion.div>
        </div>
       </section>
