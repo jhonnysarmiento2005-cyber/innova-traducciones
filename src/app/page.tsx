@@ -180,7 +180,21 @@ export default function Home() {
 
       <div className="h-20"></div>
 
-      <section id="inicio" className="flex flex-col md:flex-row items-center justify-between px-4 md:px-20 py-12 md:py-20">
+      <section 
+  id="inicio" 
+  className="relative flex flex-col md:flex-row items-center justify-between px-4 md:px-20 py-12 md:py-20 overflow-hidden"
+  style={{
+    backgroundImage: 'url(/hero-bg.jpg)',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat'
+  }}
+>
+  {/* Overlay semitransparente para que el texto se lea bien */}
+  <div className="absolute inset-0 bg-white/70 backdrop-blur-[1px]"></div>
+  
+  {/* Contenido encima del fondo */}
+  <div className="relative z-10 w-full flex flex-col md:flex-row items-center justify-between gap-8">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -228,6 +242,7 @@ export default function Home() {
             </svg>
           </div>
         </motion.div>
+       </div>
       </section>
 
       <section className="px-4 md:px-20 py-12 bg-gradient-to-r from-[#047857] to-[#10B981]">
