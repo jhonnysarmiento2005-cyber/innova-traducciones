@@ -14,11 +14,11 @@ const geistMono = Geist_Mono({
 
 export const metadata = {
   title: 'Innova Traducciones',
-  description: 'Servicios profesionales con validez legal internacional. Precisión, confidencialidad y entrega garantizada',
+  description: 'Tu descripción aquí',
   icons: {
-    icon: 'logo.png',
+    icon: '/logo.png',  // Usa el nombre exacto
   },
-};
+}
 
 export default function RootLayout({
   children,
