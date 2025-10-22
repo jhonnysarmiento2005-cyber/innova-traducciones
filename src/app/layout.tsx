@@ -16,7 +16,7 @@ export const metadata = {
   title: 'Innova Traducciones',
   description: 'Servicios profesionales con validez legal internacional. Precisión, confidencialidad y entrega garantizada',
   icons: {
-    icon: '/logo.png',
+    icon: 'logo.png',
   },
 };
 
