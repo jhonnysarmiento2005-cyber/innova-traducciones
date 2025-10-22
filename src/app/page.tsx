@@ -179,7 +179,7 @@ export default function Home() {
               
               <h2 className="text-5xl md:text-7xl font-light tracking-tight text-neutral-900 leading-none">
                 Traducciones<br/>
-                <span className="font-normal">Certificadas</span>
+                <span className="font-normal">Oficiales</span>
               </h2>
               
               <p className="text-lg md:text-xl text-neutral-600 max-w-xl leading-relaxed font-light">
