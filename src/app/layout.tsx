@@ -12,9 +12,12 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "Innova Traducciones",
-  description: "Servicios profesionales con validez legal internacional. Precisión, confidencialidad y entrega garantizada",
+export const metadata = {
+  title: 'Innova Traducciones',
+  description: 'Servicios profesionales con validez legal internacional. Precisión, confidencialidad y entrega garantizada',
+  icons: {
+    icon: '/logo.png',
+  },
 };
 
 export default function RootLayout({
