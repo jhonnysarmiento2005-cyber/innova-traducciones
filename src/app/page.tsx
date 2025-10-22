@@ -24,7 +24,7 @@ export default function Home() {
   const [formSubmitted, setFormSubmitted] = useState(false);
 
   const banners = [
-    { image: "/banner1.jpg", alt: "Traducciones Certificadas", title: "Traducciones Certificadas" },
+    { image: "/banner1.jpg", alt: "Traducciones Oficiales", title: "Traducciones Oficiales" },
     { image: "/banner2.jpg", alt: "Servicio Profesional", title: "Servicio Profesional" },
     { image: "/banner3.jpg", alt: "Validez Internacional", title: "Validez Internacional" }
   ];
@@ -126,7 +126,7 @@ export default function Home() {
             )}
             <div>
               <h1 className="text-base font-medium tracking-tight text-neutral-900">Innova Traducciones</h1>
-              <p className="text-xs text-neutral-500 hidden md:block">Traducciones Certificadas</p>
+              <p className="text-xs text-neutral-500 hidden md:block">Traducciones Oficiales</p>
             </div>
           </div>
 
@@ -481,7 +481,7 @@ export default function Home() {
           <div className="grid md:grid-cols-3 gap-12">
             <div>
               <h5 className="text-sm font-medium text-neutral-900 mb-3">Innova Traducciones SAS</h5>
-              <p className="text-sm text-neutral-600">Traducciones certificadas profesionales</p>
+              <p className="text-sm text-neutral-600">Traducciones Oficiales profesionales</p>
             </div>
             
             <div>
