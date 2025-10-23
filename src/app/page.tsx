@@ -16,11 +16,11 @@ export default function Home() {
     email: "",
     mensaje: ""
   });
-  const [formErrors, setFormErrors] = useState<{
-    nombre?: string;
-    email?: string;
-    mensaje?: string;
-  }>({});
+  const [formErrors, setFormErrors] = useState({
+    nombre: "",
+    email: "",
+    mensaje: ""
+  });
   const [formSubmitted, setFormSubmitted] = useState(false);
 
   const banners = [
@@ -34,7 +34,7 @@ export default function Home() {
       setCurrentBanner((prev) => (prev + 1) % banners.length);
     }, 5000);
     return () => clearInterval(interval);
-  }, [banners.length]);
+  }, []);
 
   const contactInfo = {
     whatsapp: "573043417841",
@@ -46,13 +46,13 @@ export default function Home() {
   const whatsappLink = `https://api.whatsapp.com/send?phone=${contactInfo.whatsapp}&text=Hola%2C%20quiero%20una%20cotizaci%C3%B3n%20de%20traducci%C3%B3n`;
   const emailLink = `mailto:${contactInfo.email}?subject=Solicitud%20de%20traducci%C3%B3n&body=Hola%2C%20quiero%20informaci%C3%B3n%20sobre%20sus%20servicios.`;
 
-  const handleInputChange = (e: any) => {
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
       [name]: value
     }));
-    if (formErrors[name as keyof typeof formErrors]) {
+    if (formErrors[name]) {
       setFormErrors(prev => ({
         ...prev,
         [name]: ""
@@ -61,7 +61,7 @@ export default function Home() {
   };
 
   const validateForm = () => {
-    const errors: any = {};
+    const errors = {};
     
     if (!formData.nombre.trim()) {
       errors.nombre = "El nombre es requerido";
@@ -106,7 +106,7 @@ export default function Home() {
     }, 5000);
   };
 
-  const scrollToSection = (id: string) => {
+  const scrollToSection = (id) => {
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
@@ -133,6 +133,7 @@ export default function Home() {
           <nav className="hidden lg:flex items-center space-x-12 text-sm text-neutral-600">
             <button onClick={() => scrollToSection('inicio')} className="hover:text-neutral-900 transition-colors">Inicio</button>
             <button onClick={() => scrollToSection('servicios')} className="hover:text-neutral-900 transition-colors">Servicios</button>
+            <button onClick={() => scrollToSection('eventos')} className="hover:text-neutral-900 transition-colors">Eventos</button>
             <button onClick={() => scrollToSection('nosotros')} className="hover:text-neutral-900 transition-colors">Nosotros</button>
             <button onClick={() => scrollToSection('contacto')} className="hover:text-neutral-900 transition-colors">Contacto</button>
             <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
@@ -153,6 +154,7 @@ export default function Home() {
               <div className="flex flex-col px-6 py-4 space-y-2">
                 <button onClick={() => scrollToSection('inicio')} className="text-left py-3 text-neutral-600 hover:text-neutral-900">Inicio</button>
                 <button onClick={() => scrollToSection('servicios')} className="text-left py-3 text-neutral-600 hover:text-neutral-900">Servicios</button>
+                <button onClick={() => scrollToSection('eventos')} className="text-left py-3 text-neutral-600 hover:text-neutral-900">Eventos</button>
                 <button onClick={() => scrollToSection('nosotros')} className="text-left py-3 text-neutral-600 hover:text-neutral-900">Nosotros</button>
                 <button onClick={() => scrollToSection('contacto')} className="text-left py-3 text-neutral-600 hover:text-neutral-900">Contacto</button>
                 <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="block mt-4">
@@ -342,6 +344,43 @@ export default function Home() {
         </div>
       </section>
 
+      <section id="eventos" className="px-6 md:px-16 py-16 md:py-24 max-w-screen-2xl mx-auto bg-white">
+        <div className="mb-20">
+          <div className="flex items-center space-x-2 text-xs tracking-widest text-neutral-500 uppercase mb-6">
+            <div className="w-8 h-px bg-neutral-900"></div>
+            <span>Eventos</span>
+          </div>
+          <h3 className="text-4xl md:text-5xl font-light tracking-tight text-neutral-900">Servicios para Eventos</h3>
+        </div>
+        
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-neutral-900/10">
+          {[
+            { title: "Equipos Para Traducción Simultánea", desc: "De 1 a 1000 equipos. Adicional: transmisor de mesa, cableado para streaming, cabina de sonido", icon: <Users size={24} />, mensaje: "Hola, necesito información sobre equipos para traducción simultánea" },
+            { title: "Transmisor Portátil", desc: "De 1 a 25 equipos transmisores portátiles", icon: <Globe size={24} />, mensaje: "Hola, necesito información sobre transmisores portátiles" },
+            { title: "Conferencias", desc: "De 1 a 10 unidades microfónicas inalámbricas + unidad central + técnico permanente", icon: <Users size={24} />, mensaje: "Hola, necesito información sobre servicios para conferencias" },
+            { title: "Reuniones Virtuales", desc: "De 1 a 1000 asistentes", icon: <Globe size={24} />, mensaje: "Hola, necesito información sobre servicios para reuniones virtuales" },
+            { title: "Seminarios", desc: "De 1 a 500 asistentes", icon: <Users size={24} />, mensaje: "Hola, necesito información sobre servicios para seminarios" },
+            { title: "Adicionales", desc: "Grabaciones por idiomas - Retransmisión", icon: <FileText size={24} />, mensaje: "Hola, necesito información sobre servicios adicionales para eventos" }
+          ].map((s, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }} viewport={{ once: true }} className="h-full">
+              <a href={`https://api.whatsapp.com/send?phone=${contactInfo.whatsapp}&text=${encodeURIComponent(s.mensaje)}`} target="_blank" rel="noopener noreferrer" className="group flex flex-col h-full bg-neutral-50 p-8 md:p-10 hover:bg-neutral-900 transition-all duration-500">
+                <div className="flex flex-col h-full space-y-6">
+                  <div className="text-neutral-900 group-hover:text-neutral-50 transition-colors">{s.icon}</div>
+                  <div className="flex-1">
+                    <h4 className="text-lg md:text-xl font-light mb-2 text-neutral-900 group-hover:text-neutral-50 transition-colors">{s.title}</h4>
+                    <p className="text-sm text-neutral-600 group-hover:text-neutral-300 transition-colors leading-relaxed">{s.desc}</p>
+                  </div>
+                  <div className="flex items-center text-xs text-neutral-500 group-hover:text-neutral-400 transition-colors mt-auto">
+                    <span className="uppercase tracking-wider">Consultar</span>
+                    <ArrowRight size={14} className="ml-2 group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </div>
+              </a>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
       <section id="nosotros" className="px-6 md:px-16 py-24 md:py-32 bg-neutral-900 text-neutral-50">
         <div className="max-w-screen-2xl mx-auto">
           <div className="grid lg:grid-cols-12 gap-16">
@@ -489,6 +528,7 @@ export default function Home() {
               <div className="flex flex-col space-y-2 text-sm">
                 <button onClick={() => scrollToSection('inicio')} className="text-left text-neutral-600 hover:text-neutral-900">Inicio</button>
                 <button onClick={() => scrollToSection('servicios')} className="text-left text-neutral-600 hover:text-neutral-900">Servicios</button>
+                <button onClick={() => scrollToSection('eventos')} className="text-left text-neutral-600 hover:text-neutral-900">Eventos</button>
                 <button onClick={() => scrollToSection('nosotros')} className="text-left text-neutral-600 hover:text-neutral-900">Nosotros</button>
                 <button onClick={() => scrollToSection('contacto')} className="text-left text-neutral-600 hover:text-neutral-900">Contacto</button>
               </div>
