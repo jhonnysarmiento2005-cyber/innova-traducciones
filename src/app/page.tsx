@@ -35,11 +35,11 @@ export default function Home() {
   ];
 
   const galleryImages = [
-    { image: "/gallery1.jpg", alt: "Equipo de trabajo", title: "Eventos" },
-    { image: "/gallery2.jpg", alt: "Documentos certificados", title: "Eventos" },
-    { image: "/gallery3.jpg", alt: "Eventos empresariales", title: " Eventos" },
-    { image: "/gallery4.jpg", alt: "Traducciones simultáneas", title: " Eventos" },
-    { image: "/gallery5.jpg", alt: "Oficinas", title: " Eventos" }
+    { image: "/gallery1.jpg", alt: "Equipo de trabajo", title: "Nuestro Equipo" },
+    { image: "/gallery2.jpg", alt: "Documentos certificados", title: "Certificaciones" },
+    { image: "/gallery3.jpg", alt: "Eventos empresariales", title: "Eventos Corporativos" },
+    { image: "/gallery4.jpg", alt: "Traducciones simultáneas", title: "Traducción Simultánea" },
+    { image: "/gallery5.jpg", alt: "Oficinas", title: "Nuestras Instalaciones" }
   ];
 
   useEffect(() => {
@@ -136,11 +136,13 @@ export default function Home() {
   };
 
   const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-      setMobileMenuOpen(false);
-    }
+    setMobileMenuOpen(false);
+    setTimeout(() => {
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 100);
   };
 
   return (
@@ -349,7 +351,7 @@ export default function Home() {
         
         <div className="grid md:grid-cols-2 gap-px bg-neutral-900/10">
           {[
-            { title: "Traducciones Oficiales", desc: "Legalización y apostilla de documentos con validez oficial", icon: <FileText size={24} />, mensaje: "Hola, necesito información sobre traducciones oficiales" },
+            { title: "Traducciones Oficiales", desc: "Documentos legales y académicos con validez oficial", icon: <FileText size={24} />, mensaje: "Hola, necesito información sobre traducciones oficiales" },
             { title: "Traducciones Técnicas", desc: "Ingeniería, medicina, derecho y tecnología", icon: <Globe size={24} />, mensaje: "Hola, necesito información sobre traducciones técnicas" },
             { title: "Interpretación", desc: "Servicio presencial o remoto certificado", icon: <Users size={24} />, mensaje: "Hola, necesito información sobre servicios de interpretación" },
             { title: "Revisión Profesional", desc: "Corrección y validación especializada", icon: <CheckCircle2 size={24} />, mensaje: "Hola, necesito información sobre revisión profesional" }
