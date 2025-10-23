@@ -4,13 +4,14 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
-import { Menu, X, Phone, Mail, MapPin, CheckCircle2, Globe, FileText, Users, Award, ArrowRight, Shield, Clock } from "lucide-react";
+import { Menu, X, Phone, Mail, MapPin, CheckCircle2, Globe, FileText, Users, Award, ArrowRight, Shield, Clock, Instagram } from "lucide-react";
 
 export default function Home() {
   const [logoSrc] = useState("/logo.png");
   const [logoFailed, setLogoFailed] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [currentBanner, setCurrentBanner] = useState(0);
+  const [currentGallery, setCurrentGallery] = useState(0);
   const [formData, setFormData] = useState({
     nombre: "",
     email: "",
@@ -33,6 +34,14 @@ export default function Home() {
     { image: "/banner3.jpg", alt: "Validez Internacional", title: "Validez Internacional" }
   ];
 
+  const galleryImages = [
+    { image: "/gallery1.jpg", alt: "Equipo de trabajo", title: "Eventos" },
+    { image: "/gallery2.jpg", alt: "Documentos certificados", title: "Eventos" },
+    { image: "/gallery3.jpg", alt: "Eventos empresariales", title: " Eventos" },
+    { image: "/gallery4.jpg", alt: "Traducciones simultáneas", title: " Eventos" },
+    { image: "/gallery5.jpg", alt: "Oficinas", title: " Eventos" }
+  ];
+
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentBanner((prev) => (prev + 1) % banners.length);
@@ -40,11 +49,19 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentGallery((prev) => (prev + 1) % galleryImages.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
+
   const contactInfo = {
     whatsapp: "573043417841",
     email: "comercial@innovatraducciones.com",
     telefono: "+57 304 341 7841",
-    direccion: "Bogotá, Colombia"
+    direccion: "Bogotá, Colombia",
+    instagram: "innovatraducciones_"
   };
 
   const whatsappLink = `https://api.whatsapp.com/send?phone=${contactInfo.whatsapp}&text=Hola%2C%20quiero%20una%20cotizaci%C3%B3n%20de%20traducci%C3%B3n`;
@@ -393,6 +410,83 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="px-6 md:px-16 py-24 md:py-32 max-w-screen-2xl mx-auto">
+        <div className="mb-20">
+          <div className="flex items-center space-x-2 text-xs tracking-widest text-neutral-500 uppercase mb-6">
+            <div className="w-8 h-px bg-neutral-900"></div>
+            <span>Galería</span>
+          </div>
+          <h3 className="text-4xl md:text-5xl font-light tracking-tight text-neutral-900">Nuestra Experiencia</h3>
+        </div>
+
+        <div className="relative h-[600px] bg-neutral-900 overflow-hidden">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentGallery}
+              initial={{ opacity: 0, scale: 1.1 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.7 }}
+              className="absolute inset-0"
+            >
+              <img
+                src={galleryImages[currentGallery].image}
+                alt={galleryImages[currentGallery].alt}
+                className="w-full h-full object-contain"
+                onError={(e) => {
+                  const target = e.currentTarget;
+                  target.style.display = 'none';
+                  const parent = target.parentElement;
+                  if (parent && !parent.querySelector('.gallery-placeholder')) {
+                    const placeholder = document.createElement('div');
+                    placeholder.className = 'gallery-placeholder absolute inset-0 flex items-center justify-center bg-neutral-800';
+                    placeholder.innerHTML = `<div class="text-center text-neutral-400"><svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" class="mx-auto mb-4"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg><p class="text-lg uppercase tracking-wider font-light">${galleryImages[currentGallery].title}</p></div>`;
+                    parent.appendChild(placeholder);
+                  }
+                }}
+              />
+              <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 bg-gradient-to-t from-neutral-900 to-transparent">
+                <div className="max-w-screen-2xl mx-auto flex items-end justify-between">
+                  <div>
+                    <p className="text-xs text-neutral-400 uppercase tracking-widest mb-1">
+                      {currentGallery + 1} / {galleryImages.length}
+                    </p>
+                    <h4 className="text-2xl md:text-3xl font-light text-white tracking-tight">
+                      {galleryImages[currentGallery].title}
+                    </h4>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+
+          <button
+            onClick={() => setCurrentGallery((prev) => (prev - 1 + galleryImages.length) % galleryImages.length)}
+            className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 bg-neutral-900/50 backdrop-blur-sm border border-white/10 flex items-center justify-center hover:bg-neutral-900/70 transition-all z-20"
+          >
+            <ArrowRight size={20} className="text-white rotate-180" />
+          </button>
+          <button
+            onClick={() => setCurrentGallery((prev) => (prev + 1) % galleryImages.length)}
+            className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 bg-neutral-900/50 backdrop-blur-sm border border-white/10 flex items-center justify-center hover:bg-neutral-900/70 transition-all z-20"
+          >
+            <ArrowRight size={20} className="text-white" />
+          </button>
+
+          <div className="absolute top-6 md:top-8 left-0 right-0 flex justify-center space-x-2 z-20">
+            {galleryImages.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentGallery(index)}
+                className={`h-0.5 transition-all ${
+                  index === currentGallery ? 'bg-white w-8' : 'bg-white/40 w-6'
+                }`}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section id="nosotros" className="px-6 md:px-16 py-24 md:py-32 bg-neutral-900 text-neutral-50">
         <div className="max-w-screen-2xl mx-auto">
           <div className="grid lg:grid-cols-12 gap-16">
@@ -484,6 +578,13 @@ export default function Home() {
                 <div className="h-14 bg-green-600 text-white flex items-center justify-center hover:bg-green-700 transition-colors">
                   <Phone size={16} className="mr-3" />
                   <span className="text-sm">WhatsApp inmediato</span>
+                </div>
+              </a>
+
+              <a href={`https://www.instagram.com/${contactInfo.instagram}`} target="_blank" rel="noopener noreferrer" className="block mt-4">
+                <div className="h-14 bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 text-white flex items-center justify-center hover:opacity-90 transition-opacity">
+                  <Instagram size={16} className="mr-3" />
+                  <span className="text-sm">Síguenos en Instagram</span>
                 </div>
               </a>
             </div>
