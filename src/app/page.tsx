@@ -16,7 +16,11 @@ export default function Home() {
     email: "",
     mensaje: ""
   });
-  const [formErrors, setFormErrors] = useState({
+  const [formErrors, setFormErrors] = useState<{
+    nombre: string;
+    email: string;
+    mensaje: string;
+  }>({
     nombre: "",
     email: "",
     mensaje: ""
@@ -46,13 +50,13 @@ export default function Home() {
   const whatsappLink = `https://api.whatsapp.com/send?phone=${contactInfo.whatsapp}&text=Hola%2C%20quiero%20una%20cotizaci%C3%B3n%20de%20traducci%C3%B3n`;
   const emailLink = `mailto:${contactInfo.email}?subject=Solicitud%20de%20traducci%C3%B3n&body=Hola%2C%20quiero%20informaci%C3%B3n%20sobre%20sus%20servicios.`;
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
       [name]: value
     }));
-    if (formErrors[name]) {
+    if (formErrors[name as keyof typeof formErrors]) {
       setFormErrors(prev => ({
         ...prev,
         [name]: ""
@@ -61,7 +65,11 @@ export default function Home() {
   };
 
   const validateForm = () => {
-    const errors = {};
+    const errors: {
+      nombre?: string;
+      email?: string;
+      mensaje?: string;
+    } = {};
     
     if (!formData.nombre.trim()) {
       errors.nombre = "El nombre es requerido";
@@ -84,7 +92,11 @@ export default function Home() {
     const errors = validateForm();
     
     if (Object.keys(errors).length > 0) {
-      setFormErrors(errors);
+      setFormErrors({
+        nombre: errors.nombre || "",
+        email: errors.email || "",
+        mensaje: errors.mensaje || ""
+      });
       return;
     }
 
@@ -106,7 +118,7 @@ export default function Home() {
     }, 5000);
   };
 
-  const scrollToSection = (id) => {
+  const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
