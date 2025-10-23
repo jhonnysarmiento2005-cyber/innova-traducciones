@@ -349,7 +349,7 @@ export default function Home() {
         
         <div className="grid md:grid-cols-2 gap-px bg-neutral-900/10">
           {[
-            { title: "Traducciones Oficiales", desc: "Documentos legales y académicos con validez oficial", icon: <FileText size={24} />, mensaje: "Hola, necesito información sobre traducciones oficiales" },
+            { title: "Traducciones Oficiales", desc: "Legalización y apostilla de documentos con validez oficial", icon: <FileText size={24} />, mensaje: "Hola, necesito información sobre traducciones oficiales" },
             { title: "Traducciones Técnicas", desc: "Ingeniería, medicina, derecho y tecnología", icon: <Globe size={24} />, mensaje: "Hola, necesito información sobre traducciones técnicas" },
             { title: "Interpretación", desc: "Servicio presencial o remoto certificado", icon: <Users size={24} />, mensaje: "Hola, necesito información sobre servicios de interpretación" },
             { title: "Revisión Profesional", desc: "Corrección y validación especializada", icon: <CheckCircle2 size={24} />, mensaje: "Hola, necesito información sobre revisión profesional" }
