@@ -15,18 +15,25 @@ export default function Home() {
   const [formData, setFormData] = useState({
     nombre: "",
     email: "",
+    telefono: "",
+    ciudad: "",
     mensaje: ""
   });
   const [formErrors, setFormErrors] = useState<{
     nombre: string;
     email: string;
+    telefono: string;
+    ciudad: string;
     mensaje: string;
   }>({
     nombre: "",
     email: "",
+    telefono: "",
+    ciudad: "",
     mensaje: ""
   });
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const banners = [
     { image: "/banner1.jpg", alt: "Traducciones Oficiales", title: "Traducciones Oficiales" },
@@ -85,6 +92,8 @@ export default function Home() {
     const errors: {
       nombre?: string;
       email?: string;
+      telefono?: string;
+      ciudad?: string;
       mensaje?: string;
     } = {};
     
@@ -97,6 +106,14 @@ export default function Home() {
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       errors.email = "Ingresa un correo válido";
     }
+
+    if (!formData.telefono.trim()) {
+      errors.telefono = "El teléfono es requerido";
+    }
+
+    if (!formData.ciudad.trim()) {
+      errors.ciudad = "La ciudad es requerida";
+    }
     
     if (!formData.mensaje.trim()) {
       errors.mensaje = "El mensaje es requerido";
@@ -105,34 +122,72 @@ export default function Home() {
     return errors;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const errors = validateForm();
     
     if (Object.keys(errors).length > 0) {
       setFormErrors({
         nombre: errors.nombre || "",
         email: errors.email || "",
+        telefono: errors.telefono || "",
+        ciudad: errors.ciudad || "",
         mensaje: errors.mensaje || ""
       });
       return;
     }
 
-    const mensaje = `Hola, soy ${formData.nombre}%0A%0ACorreo: ${formData.email}%0A%0AMensaje: ${formData.mensaje}`;
-    const whatsappUrl = `https://api.whatsapp.com/send?phone=${contactInfo.whatsapp}&text=${mensaje}`;
-    
-    window.open(whatsappUrl, '_blank');
-    
-    setFormSubmitted(true);
-    
-    setFormData({
-      nombre: "",
-      email: "",
-      mensaje: ""
-    });
-    
-    setTimeout(() => {
-      setFormSubmitted(false);
-    }, 5000);
+    setIsSubmitting(true);
+
+    try {
+      // CONFIGURACIÓN DE EMAILJS
+      // Reemplaza estos valores con tus credenciales de EmailJS
+      const serviceId = "service_50caige";
+      const templateId = "template_db0l37n";
+      const publicKey = "bl839iLxZ08QrES9a";
+
+      // Enviar email usando EmailJS
+      const response = await fetch("https://api.emailjs.com/api/v1.0/email/send", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          service_id: serviceId,
+          template_id: templateId,
+          user_id: publicKey,
+          template_params: {
+            from_name: formData.nombre,
+            from_email: formData.email,
+            telefono: formData.telefono,
+            ciudad: formData.ciudad,
+            message: formData.mensaje,
+            to_email: contactInfo.email
+          }
+        })
+      });
+
+      if (response.ok) {
+        setFormSubmitted(true);
+        setFormData({
+          nombre: "",
+          email: "",
+          telefono: "",
+          ciudad: "",
+          mensaje: ""
+        });
+        
+        setTimeout(() => {
+          setFormSubmitted(false);
+        }, 8000);
+      } else {
+        alert("Hubo un error al enviar el mensaje. Por favor intenta nuevamente.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Hubo un error al enviar el mensaje. Por favor intenta nuevamente.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const scrollToSection = (id: string) => {
@@ -594,37 +649,95 @@ export default function Home() {
 
           <div className="lg:col-span-7">
             {formSubmitted && (
-              <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="mb-6 p-4 bg-neutral-900 text-neutral-50 flex items-center">
-                <CheckCircle2 size={18} className="mr-3 flex-shrink-0" />
-                <p className="text-sm">Mensaje enviado exitosamente</p>
+              <motion.div 
+                initial={{ opacity: 0, y: -10 }} 
+                animate={{ opacity: 1, y: 0 }}
+                className="mb-6 p-6 bg-green-50 border border-green-200 flex items-start space-x-3"
+              >
+                <CheckCircle2 size={24} className="text-green-600 flex-shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-green-800 font-medium mb-1">¡Gracias por enviarnos tu solicitud!</p>
+                  <p className="text-green-700 text-sm">En breve nos comunicaremos contigo.</p>
+                </div>
               </motion.div>
             )}
             
             <div className="space-y-6">
               <div>
-                <label className="block text-xs text-neutral-500 uppercase tracking-wider mb-3">Nombre</label>
-                <input type="text" name="nombre" value={formData.nombre} onChange={handleInputChange} className={`w-full h-14 px-4 bg-transparent border ${formErrors.nombre ? 'border-red-500' : 'border-neutral-900/20'} focus:border-neutral-900 focus:outline-none transition-colors text-neutral-900`} />
+                <label className="block text-xs text-neutral-500 uppercase tracking-wider mb-3">Nombre completo</label>
+                <input 
+                  type="text" 
+                  name="nombre" 
+                  value={formData.nombre} 
+                  onChange={handleInputChange} 
+                  className={`w-full h-14 px-4 bg-transparent border ${formErrors.nombre ? 'border-red-500' : 'border-neutral-900/20'} focus:border-neutral-900 focus:outline-none transition-colors text-neutral-900`}
+                  placeholder="Ej: Juan Pérez"
+                />
                 {formErrors.nombre && <p className="text-red-500 text-xs mt-2">{formErrors.nombre}</p>}
               </div>
               
               <div>
-                <label className="block text-xs text-neutral-500 uppercase tracking-wider mb-3">Correo</label>
-                <input type="email" name="email" value={formData.email} onChange={handleInputChange} className={`w-full h-14 px-4 bg-transparent border ${formErrors.email ? 'border-red-500' : 'border-neutral-900/20'} focus:border-neutral-900 focus:outline-none transition-colors text-neutral-900`} />
+                <label className="block text-xs text-neutral-500 uppercase tracking-wider mb-3">Correo electrónico</label>
+                <input 
+                  type="email" 
+                  name="email" 
+                  value={formData.email} 
+                  onChange={handleInputChange} 
+                  className={`w-full h-14 px-4 bg-transparent border ${formErrors.email ? 'border-red-500' : 'border-neutral-900/20'} focus:border-neutral-900 focus:outline-none transition-colors text-neutral-900`}
+                  placeholder="Ej: correo@ejemplo.com"
+                />
                 {formErrors.email && <p className="text-red-500 text-xs mt-2">{formErrors.email}</p>}
+              </div>
+
+              <div>
+                <label className="block text-xs text-neutral-500 uppercase tracking-wider mb-3">Número de teléfono</label>
+                <input 
+                  type="tel" 
+                  name="telefono" 
+                  value={formData.telefono} 
+                  onChange={handleInputChange} 
+                  className={`w-full h-14 px-4 bg-transparent border ${formErrors.telefono ? 'border-red-500' : 'border-neutral-900/20'} focus:border-neutral-900 focus:outline-none transition-colors text-neutral-900`}
+                  placeholder="Ej: +57 300 123 4567"
+                />
+                {formErrors.telefono && <p className="text-red-500 text-xs mt-2">{formErrors.telefono}</p>}
+              </div>
+
+              <div>
+                <label className="block text-xs text-neutral-500 uppercase tracking-wider mb-3">Ciudad</label>
+                <input 
+                  type="text" 
+                  name="ciudad" 
+                  value={formData.ciudad} 
+                  onChange={handleInputChange} 
+                  className={`w-full h-14 px-4 bg-transparent border ${formErrors.ciudad ? 'border-red-500' : 'border-neutral-900/20'} focus:border-neutral-900 focus:outline-none transition-colors text-neutral-900`}
+                  placeholder="Ej: Bogotá"
+                />
+                {formErrors.ciudad && <p className="text-red-500 text-xs mt-2">{formErrors.ciudad}</p>}
               </div>
               
               <div>
                 <label className="block text-xs text-neutral-500 uppercase tracking-wider mb-3">Mensaje</label>
-                <textarea name="mensaje" value={formData.mensaje} onChange={handleInputChange} rows={6} className={`w-full px-4 py-4 bg-transparent border ${formErrors.mensaje ? 'border-red-500' : 'border-neutral-900/20'} focus:border-neutral-900 focus:outline-none transition-colors resize-none text-neutral-900`} />
+                <textarea 
+                  name="mensaje" 
+                  value={formData.mensaje} 
+                  onChange={handleInputChange} 
+                  rows={6} 
+                  className={`w-full px-4 py-4 bg-transparent border ${formErrors.mensaje ? 'border-red-500' : 'border-neutral-900/20'} focus:border-neutral-900 focus:outline-none transition-colors resize-none text-neutral-900`}
+                  placeholder="Cuéntanos qué necesitas..."
+                />
                 {formErrors.mensaje && <p className="text-red-500 text-xs mt-2">{formErrors.mensaje}</p>}
               </div>
               
-              <button onClick={handleSubmit} className="group w-full h-14 bg-neutral-900 text-neutral-50 flex items-center justify-between px-6 hover:bg-neutral-800 transition-colors">
-                <span className="text-sm">Enviar solicitud</span>
+              <button 
+                onClick={handleSubmit} 
+                disabled={isSubmitting}
+                className="group w-full h-14 bg-neutral-900 text-neutral-50 flex items-center justify-between px-6 hover:bg-neutral-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <span className="text-sm">
+                  {isSubmitting ? 'Enviando...' : 'Enviar solicitud'}
+                </span>
                 <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
               </button>
-              
-              <p className="text-xs text-neutral-400 text-center">Será redirigido a WhatsApp con su mensaje</p>
             </div>
           </div>
         </div>
