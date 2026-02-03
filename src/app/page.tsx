@@ -16,24 +16,25 @@ export default function Home() {
     nombre: "",
     email: "",
     telefono: "",
-    ciudad: "",
+    ciudadPais: "",
     mensaje: ""
   });
   const [formErrors, setFormErrors] = useState<{
     nombre: string;
     email: string;
     telefono: string;
-    ciudad: string;
+    ciudadPais: string;
     mensaje: string;
   }>({
     nombre: "",
     email: "",
     telefono: "",
-    ciudad: "",
+    ciudadPais: "",
     mensaje: ""
   });
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showThankYouModal, setShowThankYouModal] = useState(false);
 
   const banners = [
     { image: "/banner1.jpg", alt: "Traducciones Oficiales", title: "Traducciones Oficiales" },
@@ -93,7 +94,7 @@ export default function Home() {
       nombre?: string;
       email?: string;
       telefono?: string;
-      ciudad?: string;
+      ciudadPais?: string;
       mensaje?: string;
     } = {};
     
@@ -111,8 +112,8 @@ export default function Home() {
       errors.telefono = "El teléfono es requerido";
     }
 
-    if (!formData.ciudad.trim()) {
-      errors.ciudad = "La ciudad es requerida";
+    if (!formData.ciudadPais.trim()) {
+      errors.ciudadPais = "La ciudad/país es requerida";
     }
     
     if (!formData.mensaje.trim()) {
@@ -130,7 +131,7 @@ export default function Home() {
         nombre: errors.nombre || "",
         email: errors.email || "",
         telefono: errors.telefono || "",
-        ciudad: errors.ciudad || "",
+        ciudadPais: errors.ciudadPais || "",
         mensaje: errors.mensaje || ""
       });
       return;
@@ -159,7 +160,7 @@ export default function Home() {
             from_name: formData.nombre,
             from_email: formData.email,
             telefono: formData.telefono,
-            ciudad: formData.ciudad,
+            ciudadPais: formData.ciudadPais,
             message: formData.mensaje,
             to_email: contactInfo.email
           }
@@ -167,18 +168,14 @@ export default function Home() {
       });
 
       if (response.ok) {
-        setFormSubmitted(true);
+        setShowThankYouModal(true);
         setFormData({
           nombre: "",
           email: "",
           telefono: "",
-          ciudad: "",
+          ciudadPais: "",
           mensaje: ""
         });
-        
-        setTimeout(() => {
-          setFormSubmitted(false);
-        }, 8000);
       } else {
         alert("Hubo un error al enviar el mensaje. Por favor intenta nuevamente.");
       }
@@ -222,11 +219,11 @@ export default function Home() {
             <button onClick={() => scrollToSection('eventos')} className="hover:text-neutral-900 transition-colors">Eventos</button>
             <button onClick={() => scrollToSection('nosotros')} className="hover:text-neutral-900 transition-colors">Nosotros</button>
             <button onClick={() => scrollToSection('contacto')} className="hover:text-neutral-900 transition-colors">Contacto</button>
-            <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
-              <div className="h-10 px-6 bg-neutral-900 text-neutral-50 flex items-center justify-center text-sm hover:bg-neutral-800 transition-colors">
+            <button onClick={() => scrollToSection('contacto')}>
+              <div className="h-10 px-6 bg-neutral-900 text-neutral-50 flex items-center justify-center text-sm hover:bg-neutral-800 transition-colors cursor-pointer">
                 Cotización
               </div>
-            </a>
+            </button>
           </nav>
 
           <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="lg:hidden text-neutral-900">
@@ -243,9 +240,9 @@ export default function Home() {
                 <button onClick={() => scrollToSection('eventos')} className="text-left py-3 text-neutral-600 hover:text-neutral-900">Eventos</button>
                 <button onClick={() => scrollToSection('nosotros')} className="text-left py-3 text-neutral-600 hover:text-neutral-900">Nosotros</button>
                 <button onClick={() => scrollToSection('contacto')} className="text-left py-3 text-neutral-600 hover:text-neutral-900">Contacto</button>
-                <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="block mt-4">
+                <button onClick={() => scrollToSection('contacto')} className="block mt-4 w-full">
                   <div className="h-12 bg-neutral-900 text-neutral-50 flex items-center justify-center">Cotización</div>
-                </a>
+                </button>
               </div>
             </motion.nav>
           )}
@@ -648,20 +645,6 @@ export default function Home() {
           </div>
 
           <div className="lg:col-span-7">
-            {formSubmitted && (
-              <motion.div 
-                initial={{ opacity: 0, y: -10 }} 
-                animate={{ opacity: 1, y: 0 }}
-                className="mb-6 p-6 bg-green-50 border border-green-200 flex items-start space-x-3"
-              >
-                <CheckCircle2 size={24} className="text-green-600 flex-shrink-0 mt-0.5" />
-                <div>
-                  <p className="text-green-800 font-medium mb-1">¡Gracias por enviarnos tu solicitud!</p>
-                  <p className="text-green-700 text-sm">En breve nos comunicaremos contigo.</p>
-                </div>
-              </motion.div>
-            )}
-            
             <div className="space-y-6">
               <div>
                 <label className="block text-xs text-neutral-500 uppercase tracking-wider mb-3">Nombre completo</label>
@@ -703,16 +686,16 @@ export default function Home() {
               </div>
 
               <div>
-                <label className="block text-xs text-neutral-500 uppercase tracking-wider mb-3">Ciudad</label>
+                <label className="block text-xs text-neutral-500 uppercase tracking-wider mb-3">Ciudad/País</label>
                 <input 
                   type="text" 
-                  name="ciudad" 
-                  value={formData.ciudad} 
+                  name="ciudadPais" 
+                  value={formData.ciudadPais} 
                   onChange={handleInputChange} 
-                  className={`w-full h-14 px-4 bg-transparent border ${formErrors.ciudad ? 'border-red-500' : 'border-neutral-900/20'} focus:border-neutral-900 focus:outline-none transition-colors text-neutral-900`}
-                  placeholder="Ej: Bogotá"
+                  className={`w-full h-14 px-4 bg-transparent border ${formErrors.ciudadPais ? 'border-red-500' : 'border-neutral-900/20'} focus:border-neutral-900 focus:outline-none transition-colors text-neutral-900`}
+                  placeholder="Ej: Bogotá, Colombia"
                 />
-                {formErrors.ciudad && <p className="text-red-500 text-xs mt-2">{formErrors.ciudad}</p>}
+                {formErrors.ciudadPais && <p className="text-red-500 text-xs mt-2">{formErrors.ciudadPais}</p>}
               </div>
               
               <div>
@@ -777,6 +760,82 @@ export default function Home() {
           </div>
         </div>
       </footer>
+
+      {/* Modal de Agradecimiento */}
+      <AnimatePresence>
+        {showThankYouModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+            onClick={() => setShowThankYouModal(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ type: "spring", duration: 0.5 }}
+              className="bg-white max-w-lg w-full p-8 md:p-12 shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="text-center space-y-6">
+                {/* Ícono de éxito */}
+                <div className="flex justify-center">
+                  <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center">
+                    <CheckCircle2 size={40} className="text-green-600" />
+                  </div>
+                </div>
+
+                {/* Título */}
+                <div className="space-y-2">
+                  <h3 className="text-3xl md:text-4xl font-light tracking-tight text-neutral-900">
+                    ¡Gracias por tu solicitud!
+                  </h3>
+                  <div className="w-16 h-px bg-neutral-900 mx-auto"></div>
+                </div>
+
+                {/* Mensaje */}
+                <div className="space-y-4">
+                  <p className="text-lg text-neutral-600 leading-relaxed">
+                    Hemos recibido tu mensaje exitosamente.
+                  </p>
+                  <p className="text-base text-neutral-600 leading-relaxed">
+                    Nuestro equipo de <strong>Innova Traducciones</strong> se comunicará contigo lo más pronto posible para brindarte la información que necesitas.
+                  </p>
+                  <p className="text-sm text-neutral-500">
+                    Tiempo estimado de respuesta: <strong>24 horas</strong>
+                  </p>
+                </div>
+
+                {/* Información adicional */}
+                <div className="bg-neutral-50 p-6 space-y-3">
+                  <p className="text-xs text-neutral-500 uppercase tracking-wider">Mientras tanto</p>
+                  <div className="flex flex-col space-y-2 text-sm text-neutral-600">
+                    <a href={`https://api.whatsapp.com/send?phone=${contactInfo.whatsapp}`} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center space-x-2 hover:text-green-600 transition-colors">
+                      <Phone size={16} />
+                      <span>Contáctanos por WhatsApp</span>
+                    </a>
+                    <a href={`mailto:${contactInfo.email}`} className="flex items-center justify-center space-x-2 hover:text-neutral-900 transition-colors">
+                      <Mail size={16} />
+                      <span>Envíanos un correo</span>
+                    </a>
+                  </div>
+                </div>
+
+                {/* Botón de cerrar */}
+                <button
+                  onClick={() => setShowThankYouModal(false)}
+                  className="w-full h-14 bg-neutral-900 text-neutral-50 flex items-center justify-center hover:bg-neutral-800 transition-colors group"
+                >
+                  <span className="text-sm">Cerrar</span>
+                  <X size={16} className="ml-2 group-hover:rotate-90 transition-transform" />
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </main>
   );
 }
