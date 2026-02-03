@@ -67,7 +67,7 @@ export default function Home() {
   const contactInfo = {
     whatsapp: "573043417841",
     email: "comercial@innovatraducciones.com",
-    telefono: "+57 304 341 7841",
+    telefono: "+57 304 341 7841 - +57 323 303 5070",
     direccion: "Bogotá, Colombia",
     instagram: "innovatraducciones_"
   };
