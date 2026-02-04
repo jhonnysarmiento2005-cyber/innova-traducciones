@@ -4,9 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { Menu, X, Phone, Mail, MapPin, CheckCircle2, Globe, FileText, Users, Award, ArrowRight, Shield, Clock, Instagram } from "lucide-react";
 
 export default function Home() {
+  const router = useRouter();
   const [logoSrc] = useState("/logo.png");
   const [logoFailed, setLogoFailed] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -34,7 +36,6 @@ export default function Home() {
   });
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showThankYouModal, setShowThankYouModal] = useState(false);
 
   const banners = [
     { image: "/banner1.jpg", alt: "Traducciones Oficiales", title: "Traducciones Oficiales" },
@@ -67,7 +68,9 @@ export default function Home() {
   const contactInfo = {
     whatsapp: "573043417841",
     email: "comercial@innovatraducciones.com",
-    telefono: "+57 304 341 7841 - +57 323 303 5070",
+    email2: "info.innovatraducciones@gmail.com",
+    telefono: "+57 304 341 7841",
+    telefono2: "+57 323 303 5070",
     direccion: "Bogotá, Colombia",
     instagram: "innovatraducciones_"
   };
@@ -168,14 +171,8 @@ export default function Home() {
       });
 
       if (response.ok) {
-        setShowThankYouModal(true);
-        setFormData({
-          nombre: "",
-          email: "",
-          telefono: "",
-          ciudadPais: "",
-          mensaje: ""
-        });
+        // Redirigir a la página de gracias
+        router.push('/gracias');
       } else {
         alert("Hubo un error al enviar el mensaje. Por favor intenta nuevamente.");
       }
@@ -219,6 +216,7 @@ export default function Home() {
             <button onClick={() => scrollToSection('eventos')} className="hover:text-neutral-900 transition-colors">Eventos</button>
             <button onClick={() => scrollToSection('nosotros')} className="hover:text-neutral-900 transition-colors">Nosotros</button>
             <button onClick={() => scrollToSection('contacto')} className="hover:text-neutral-900 transition-colors">Contacto</button>
+            <button onClick={() => router.push('/politicadeprivacidad')} className="hover:text-neutral-900 transition-colors">Legal</button>
             <button onClick={() => scrollToSection('contacto')}>
               <div className="h-10 px-6 bg-neutral-900 text-neutral-50 flex items-center justify-center text-sm hover:bg-neutral-800 transition-colors cursor-pointer">
                 Cotización
@@ -240,6 +238,7 @@ export default function Home() {
                 <button onClick={() => scrollToSection('eventos')} className="text-left py-3 text-neutral-600 hover:text-neutral-900">Eventos</button>
                 <button onClick={() => scrollToSection('nosotros')} className="text-left py-3 text-neutral-600 hover:text-neutral-900">Nosotros</button>
                 <button onClick={() => scrollToSection('contacto')} className="text-left py-3 text-neutral-600 hover:text-neutral-900">Contacto</button>
+                <button onClick={() => { setMobileMenuOpen(false); router.push('/politicadeprivacidad'); }} className="text-left py-3 text-neutral-600 hover:text-neutral-900">Legal</button>
                 <button onClick={() => scrollToSection('contacto')} className="block mt-4 w-full">
                   <div className="h-12 bg-neutral-900 text-neutral-50 flex items-center justify-center">Cotización</div>
                 </button>
@@ -605,18 +604,24 @@ export default function Home() {
             
             <div className="space-y-8">
               <div className="flex items-start space-x-4 pb-6 border-b border-neutral-900/10">
-                <Phone size={20} className="text-neutral-900 mt-1" />
-                <div>
-                  <p className="text-xs text-neutral-500 uppercase tracking-wider mb-1">Teléfono</p>
-                  <a href={`tel:${contactInfo.telefono}`} className="text-neutral-900 hover:text-neutral-600">{contactInfo.telefono}</a>
+                <Phone size={20} className="text-neutral-900 mt-1 flex-shrink-0" />
+                <div className="flex-1">
+                  <p className="text-xs text-neutral-500 uppercase tracking-wider mb-2">Teléfono</p>
+                  <div className="space-y-1">
+                    <a href={`tel:${contactInfo.telefono}`} className="block text-neutral-900 hover:text-neutral-600">{contactInfo.telefono}</a>
+                    <a href={`tel:${contactInfo.telefono2}`} className="block text-neutral-900 hover:text-neutral-600">{contactInfo.telefono2}</a>
+                  </div>
                 </div>
               </div>
               
               <div className="flex items-start space-x-4 pb-6 border-b border-neutral-900/10">
-                <Mail size={20} className="text-neutral-900 mt-1" />
-                <div>
-                  <p className="text-xs text-neutral-500 uppercase tracking-wider mb-1">Correo</p>
-                  <a href={emailLink} className="text-neutral-900 hover:text-neutral-600 break-all">{contactInfo.email}</a>
+                <Mail size={20} className="text-neutral-900 mt-1 flex-shrink-0" />
+                <div className="flex-1">
+                  <p className="text-xs text-neutral-500 uppercase tracking-wider mb-2">Correo</p>
+                  <div className="space-y-1">
+                    <a href={`mailto:${contactInfo.email}`} className="block text-neutral-900 hover:text-neutral-600 break-all">{contactInfo.email}</a>
+                    <a href={`mailto:${contactInfo.email2}`} className="block text-neutral-900 hover:text-neutral-600 break-all">{contactInfo.email2}</a>
+                  </div>
                 </div>
               </div>
               
@@ -742,14 +747,16 @@ export default function Home() {
                 <button onClick={() => scrollToSection('eventos')} className="text-left text-neutral-600 hover:text-neutral-900">Eventos</button>
                 <button onClick={() => scrollToSection('nosotros')} className="text-left text-neutral-600 hover:text-neutral-900">Nosotros</button>
                 <button onClick={() => scrollToSection('contacto')} className="text-left text-neutral-600 hover:text-neutral-900">Contacto</button>
+                <button onClick={() => router.push('/politicadeprivacidad')} className="text-left text-neutral-600 hover:text-neutral-900">Política de Privacidad</button>
               </div>
             </div>
             
             <div>
               <h5 className="text-xs text-neutral-500 uppercase tracking-wider mb-4">Información</h5>
               <div className="flex flex-col space-y-2 text-sm text-neutral-600">
-                <p>{contactInfo.telefono}</p>
+                <p>{contactInfo.telefono} - {contactInfo.telefono2}</p>
                 <p className="break-all">{contactInfo.email}</p>
+                <p className="break-all">{contactInfo.email2}</p>
                 <p>{contactInfo.direccion}</p>
               </div>
             </div>
@@ -760,82 +767,6 @@ export default function Home() {
           </div>
         </div>
       </footer>
-
-      {/* Modal de Agradecimiento */}
-      <AnimatePresence>
-        {showThankYouModal && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
-            onClick={() => setShowThankYouModal(false)}
-          >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              transition={{ type: "spring", duration: 0.5 }}
-              className="bg-white max-w-lg w-full p-8 md:p-12 shadow-2xl"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="text-center space-y-6">
-                {/* Ícono de éxito */}
-                <div className="flex justify-center">
-                  <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center">
-                    <CheckCircle2 size={40} className="text-green-600" />
-                  </div>
-                </div>
-
-                {/* Título */}
-                <div className="space-y-2">
-                  <h3 className="text-3xl md:text-4xl font-light tracking-tight text-neutral-900">
-                    ¡Gracias por tu solicitud!
-                  </h3>
-                  <div className="w-16 h-px bg-neutral-900 mx-auto"></div>
-                </div>
-
-                {/* Mensaje */}
-                <div className="space-y-4">
-                  <p className="text-lg text-neutral-600 leading-relaxed">
-                    Hemos recibido tu mensaje exitosamente.
-                  </p>
-                  <p className="text-base text-neutral-600 leading-relaxed">
-                    Nuestro equipo de <strong>Innova Traducciones</strong> se comunicará contigo lo más pronto posible para brindarte la información que necesitas.
-                  </p>
-                  <p className="text-sm text-neutral-500">
-                    Tiempo estimado de respuesta: <strong>24 horas</strong>
-                  </p>
-                </div>
-
-                {/* Información adicional */}
-                <div className="bg-neutral-50 p-6 space-y-3">
-                  <p className="text-xs text-neutral-500 uppercase tracking-wider">Mientras tanto</p>
-                  <div className="flex flex-col space-y-2 text-sm text-neutral-600">
-                    <a href={`https://api.whatsapp.com/send?phone=${contactInfo.whatsapp}`} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center space-x-2 hover:text-green-600 transition-colors">
-                      <Phone size={16} />
-                      <span>Contáctanos por WhatsApp</span>
-                    </a>
-                    <a href={`mailto:${contactInfo.email}`} className="flex items-center justify-center space-x-2 hover:text-neutral-900 transition-colors">
-                      <Mail size={16} />
-                      <span>Envíanos un correo</span>
-                    </a>
-                  </div>
-                </div>
-
-                {/* Botón de cerrar */}
-                <button
-                  onClick={() => setShowThankYouModal(false)}
-                  className="w-full h-14 bg-neutral-900 text-neutral-50 flex items-center justify-center hover:bg-neutral-800 transition-colors group"
-                >
-                  <span className="text-sm">Cerrar</span>
-                  <X size={16} className="ml-2 group-hover:rotate-90 transition-transform" />
-                </button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </main>
   );
 }
