@@ -30,6 +30,52 @@ export default function RootLayout({
           `}
         </Script>
         {/* End Google Tag Manager */}
+
+        {/* jQuery (requerido para BlueCaribu) */}
+        <Script 
+          src="https://code.jquery.com/jquery-3.6.0.min.js"
+          strategy="beforeInteractive"
+        />
+
+        {/* BlueCaribu Integration Script */}
+        <Script id="bluecaribu-integration" strategy="afterInteractive">
+          {`
+            (function(){
+              var script = document.createElement('script');
+              script.src = 'https://app.bluecaribu.com/conversion/integration';
+              script.type = 'text/javascript';
+              script.async = true;
+              document.head.appendChild(script);
+            })();
+          `}
+        </Script>
+
+        {/* BlueCaribu Configuration */}
+        <Script id="bluecaribu-config" strategy="afterInteractive">
+          {`
+            window.addEventListener('load', function() {
+              if (typeof bctag !== 'undefined') {
+                bctag({
+                  config: {
+                    token: '93693707B998517A02FDEF9D5376E4F3',
+                    redirect: '/gracias'
+                  },
+                  forms: {
+                    ".blueform": {
+                      contact_name: "nombre",
+                      contact_email: "email",
+                      contact_phone: "telefono",
+                      lead_msg: "mensaje",
+                      custom: {
+                        ciudad: "ciudad"
+                      }
+                    }
+                  }
+                });
+              }
+            });
+          `}
+        </Script>
       </head>
       <body className={inter.className}>
         <GoogleTagManager />
